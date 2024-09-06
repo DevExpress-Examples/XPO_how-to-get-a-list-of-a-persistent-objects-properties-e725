@@ -1,92 +1,102 @@
-Imports Microsoft.VisualBasic
-	Imports System
-	Imports DevExpress.Xpo
+Imports DevExpress.Xpo
+
 Namespace ObjectProperties
 
+    <Persistent("Customers")>
+    Public Class Customer
+        Inherits XPLiteObject
 
-	<Persistent("Customers")> _
-	Public Class Customer
-		Inherits XPLiteObject
-		<Key> _
-		Public CustomerID As String
-		Public CompanyName As String
-		Public ContactTitle As String
+        <Key>
+        Public CustomerID As String
 
-		<Association("CustomerOrders", GetType(Order))> _
-		Public ReadOnly Property Orders() As XPCollection
-			Get
-				Return GetCollection("Orders")
-			End Get
-		End Property
-	End Class
+        Public CompanyName As String
 
-	<Persistent("Orders")> _
-	Public Class Order
-		Inherits XPLiteObject
-		<Key> _
-		Public OrderID As String
+        Public ContactTitle As String
 
-		<Persistent("CustomerID"), Association("CustomerOrders")> _
-		Public Customer As Customer
+        <Association("CustomerOrders", GetType(Order))>
+        Public ReadOnly Property Orders As XPCollection
+            Get
+                Return GetCollection("Orders")
+            End Get
+        End Property
+    End Class
 
-		<Persistent("EmployeeID"), Association("EmployeeOrders")> _
-		Public Employee As Employee
+    <Persistent("Orders")>
+    Public Class Order
+        Inherits XPLiteObject
 
-		<Association("FK_Orders_Shippers")> _
-		Public ShipVia As Shipper
-	End Class
+        <Key>
+        Public OrderID As String
 
-	<Persistent("Shippers")> _
-	Public Class Shipper
-		Inherits XPLiteObject
-		<Key> _
-		Public ShipperID As Integer
-		Public CompanyName As String
-		Public Phone As String
+        <Persistent("CustomerID"), Association("CustomerOrders")>
+        Public Customer As Customer
 
-		<Association("FK_Orders_Shippers", GetType(Order))> _
-		Public ReadOnly Property Orders() As XPCollection
-			Get
-				Return GetCollection("Orders")
-			End Get
-		End Property
-	End Class
+        <Persistent("EmployeeID"), Association("EmployeeOrders")>
+        Public Employee As Employee
 
-	<Persistent("Employees")> _
-	Public Class Employee
-		Inherits XPLiteObject
-		<Key> _
-		Public EmployeeID As String
-		Public FirstName As String
-		Public LastName As String
+        <Association("FK_Orders_Shippers")>
+        Public ShipVia As Shipper
+    End Class
 
-		<Association("EmployeeOrders", GetType(Order))> _
-		Public ReadOnly Property Orders() As XPCollection
-			Get
-				Return GetCollection("Orders")
-			End Get
-		End Property
+    <Persistent("Shippers")>
+    Public Class Shipper
+        Inherits XPLiteObject
 
-		<Persistent("TerritoryID"), Association("EmployeeTerritories", GetType(Territory))> _
-		Public ReadOnly Property Territories() As XPCollection
-			Get
-				Return GetCollection("Territories")
-			End Get
-		End Property
-	End Class
+        <Key>
+        Public ShipperID As Integer
 
-	<Persistent("Territories")> _
-	Public Class Territory
-		Inherits XPLiteObject
-		<Key> _
-		Public TerritoryID As String
-		Public TerritoryDescription As String
+        Public CompanyName As String
 
-		<Persistent("EmployeeID"), Association("EmployeeTerritories", GetType(Employee))> _
-		Public ReadOnly Property Employees() As XPCollection
-			Get
-				Return GetCollection("Employees")
-			End Get
-		End Property
-	End Class
+        Public Phone As String
+
+        <Association("FK_Orders_Shippers", GetType(Order))>
+        Public ReadOnly Property Orders As XPCollection
+            Get
+                Return GetCollection("Orders")
+            End Get
+        End Property
+    End Class
+
+    <Persistent("Employees")>
+    Public Class Employee
+        Inherits XPLiteObject
+
+        <Key>
+        Public EmployeeID As String
+
+        Public FirstName As String
+
+        Public LastName As String
+
+        <Association("EmployeeOrders", GetType(Order))>
+        Public ReadOnly Property Orders As XPCollection
+            Get
+                Return GetCollection("Orders")
+            End Get
+        End Property
+
+        <Persistent("TerritoryID"), Association("EmployeeTerritories", GetType(Territory))>
+        Public ReadOnly Property Territories As XPCollection
+            Get
+                Return GetCollection("Territories")
+            End Get
+        End Property
+    End Class
+
+    <Persistent("Territories")>
+    Public Class Territory
+        Inherits XPLiteObject
+
+        <Key>
+        Public TerritoryID As String
+
+        Public TerritoryDescription As String
+
+        <Persistent("EmployeeID"), Association("EmployeeTerritories", GetType(Employee))>
+        Public ReadOnly Property Employees As XPCollection
+            Get
+                Return GetCollection("Employees")
+            End Get
+        End Property
+    End Class
 End Namespace
